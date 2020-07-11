@@ -1,21 +1,42 @@
 <template>
     <div class="image-con">
-        <div :id="`img-${hash}`" class="base" :class="status === 'loaded' ? 'show' : 'hide'" >
-            
-        </div>
-        <svg :id="`svg-${hash}`" class="base" width="100%" :height="svgheight" :class="status !== 'loaded' ? 'show' : 'hide'">
-            <rect width="100%" :height="svgheight" :style="{ fill: perc2color(Math.floor(hash / 10000000)), stroke:'none'}" />
+
+        <div
+            :id="`img-${hash}`"
+            class="base"
+            :class="status === 'loaded' ? 'show' : 'hide'"
+        ></div>
+
+        <svg
+            :id="`svg-${hash}`"
+            class="base" width="100%"
+            :height="svgheight"
+            :class="status !== 'loaded' ? 'show' : 'hide'"
+        >
+            <rect
+                width="100%"
+                :height="svgheight"
+                :style="{ 
+                    fill: perc2color(Math.floor(hash / 10000000)),
+                    stroke:'none'
+                }"
+            />
         </svg>
+
     </div>
 </template>
 
 <script>
 // TODO:
-// - define array of various image sizes for request at different screen widths
+// - allow user to set background color of svg tiles using a prop
 //
-// - possible choice between loading spinner and svg background
+// - possible choice between svg background and a slot
 //
-// - implement error behavior, if src incorrect or server unresponsive
+// - implement error behavior, if src incorrect or server unresponsive, display ddfault 404, or slot 404
+//
+// - SEO behavior considerations - alt tags, make sure alt tags are rendered before crawl
+// 
+// - The h x w ratio for the svg to be settable via a prop with solid defaults
 //
 export default {
     name: 'vueimage',
@@ -43,10 +64,13 @@ export default {
         }
     },
     created() {
+
         this.hash = Math.floor((Math.random() * 99999999) + 1)
         this.scrollloc = window.scrollY
+        
     },
     mounted() {
+
         this.svgel = document.getElementById(`svg-${this.hash}`)
 
         this.svgheight = Math.floor((this.svgel.getBoundingClientRect().right - this.svgel.getBoundingClientRect().left) * 0.66)
@@ -116,26 +140,22 @@ export default {
     },
 }
 </script>
-<style scoped>
-.base {
-    opacity: 1;
-    transition: opacity 0.5s ease, visibility 0.5s ease;
-    object-fit: fill;
-    width: 100%;
-}
-.show {
-    visibility: visible;
-    opacity: 1;
-    transition: opacity 0.5s ease, visibility 0.5s ease;
-}
-.hide {
-    visibility: hidden;
-    opacity: 0;
-    height: 0;
-    transition: opacity 0.5s ease, visibility 0.5s ease;
-}
-img {
-    width: 100%;
-    object-fit: fill;
-}
+<style lang="sass" scoped>
+.base
+    opacity: 1
+    transition: opacity 0.5s ease, visibility 0.5s ease
+    object-fit: fill
+    width: 100%
+.show
+    visibility: visible
+    opacity: 1
+    transition: opacity 0.5s ease, visibility 0.5s ease
+.hide
+    visibility: hidden
+    opacity: 0
+    height: 0
+    transition: opacity 0.5s ease, visibility 0.5s ease
+img
+    width: 100%
+    object-fit: fill
 </style>
