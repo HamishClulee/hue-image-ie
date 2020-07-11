@@ -1,4 +1,6 @@
-# vueimage
+# hue-image-ie
+
+A time saving vue component for use with ie11+
 
 ## Project setup
 ```
